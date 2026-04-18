@@ -3,6 +3,7 @@
   "version": "4.5.19",
   "private": true,
   "scripts": {
+    "preinstall": "git submodule update --init --recursive",
     "dev": "concurrently \"yarn dev:terre\" \"yarn dev:origine\" \"yarn dev:start-dev-server\"",
     "lint": "concurrently \"yarn lint:terre\" \"yarn lint:origine\"",
     "nsis-bundle": "makensis ./installer.nsi",

@@ -1,0 +1,3 @@
+[submodule "vendor/WebGAL"]
+	path = vendor/WebGAL
+	url = https://github.com/code-band/WebGAL.git

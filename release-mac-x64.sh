@@ -1,4 +1,10 @@
 echo "Welcome to build WebGAL Terre (Mac x64), the editor of WebGAL platform."
+# 初始化子模块并构建 WebGAL（引擎/解析器），确保 file: 依赖包含构建产物
+git submodule update --init --recursive
+cd vendor/WebGAL
+yarn install --frozen-lockfile --network-timeout=300000
+yarn build
+cd ../../
 # 安装依赖
 yarn install --frozen-lockfile --network-timeout=300000
 
