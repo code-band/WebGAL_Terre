@@ -51,13 +51,16 @@ export const useComponentTreeTextbox = () => {
       { name: t`角色名外层文本`, class: 'outerName' },
       { name: t`角色名内层文本`, class: 'innerName' },
       { name: t`文本框文本`, class: 'text' },
+      { name: t`对话输入行`, class: 'textInputRow' },
+      { name: t`对话输入框`, class: 'textInput' },
+      { name: t`对话发送按钮`, class: 'textInputButton' },
     ],
   };
 };
 
 export const useTemplateTempScene = () => {
   return {
-    textbox: `WebGal:${t`对话框文字`} -fontSize=default;`,
+    textbox: `WebGal:${t`对话框文字`} -fontSize=default -inputVar=test;`,
     choose: `choose:${t`可选项`}:|[false]->${t`不可选项`}:;`
   };
 };

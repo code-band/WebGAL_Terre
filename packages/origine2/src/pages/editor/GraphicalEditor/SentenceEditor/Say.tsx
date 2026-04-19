@@ -24,6 +24,8 @@ export default function Say(props: ISentenceEditorProps) {
   const volume = useValue(getArgByKey(props.sentence, "volume").toString() ?? "");
   const isNoSpeaker = useValue(props.sentence.commandRaw === "");
   const figureId = useValue(getArgByKey(props.sentence, "figureId").toString() ?? "");
+  const inputVarKey = useValue(getArgByKey(props.sentence, "inputVar").toString() ?? "");
+  const isDialogInput = useValue(!!getArgByKey(props.sentence, "inputVar"));
   const figurePosition = useValue<FigurePosition>("");
   const figurePositions = new Map<FigurePosition, string>([
     [ "", t`未指定` ],
@@ -102,6 +104,7 @@ export default function Say(props: ISentenceEditorProps) {
         {key: "center", value: figurePosition.value === "center"},
         {key: "id", value: figurePosition.value === "id"},
         {key: "figureId", value: (figurePosition.value === "id" ? figureId.value : "")},
+        {key: "inputVar", value: (isDialogInput.value ? inputVarKey.value : false)},
       ],
       props.sentence.inlineComment,
     );
@@ -238,6 +241,45 @@ export default function Say(props: ISentenceEditorProps) {
             offText={t`文字展示完等待`}
             isChecked={isNotend.value}
           />
+        </CommonOptions>
+        <CommonOptions key="dialogInput" title={t`对话输入`}>
+          <div style={{ display: 'flex', flexFlow: 'column', gap: '4px', width: '100%' }}>
+            <TerreToggle
+              title=""
+              onChange={(newValue) => {
+                isDialogInput.set(newValue);
+                if (newValue && inputVarKey.value.trim() === "") {
+                  inputVarKey.set("userInput");
+                }
+                if (!newValue) {
+                  inputVarKey.set("");
+                }
+                submit();
+              }}
+              onText={t`开启对话输入`}
+              offText={t`关闭对话输入`}
+              isChecked={isDialogInput.value}
+            />
+            {isDialogInput.value && (
+              <input
+                value={inputVarKey.value}
+                onChange={(ev) => {
+                  const newValue = ev.target.value;
+                  inputVarKey.set(newValue ?? "");
+                  triggerSubmit();
+                }}
+                onBlur={() => {
+                  submitDebounced.cancel();
+                  submit();
+                }}
+                onCompositionStart={handleCompositionStart}
+                onCompositionEnd={handleCompositionEnd}
+                className={styles.sayInput}
+                placeholder={t`写入变量名（如 name）`}
+                style={{ width: "100%" }}
+              />
+            )}
+          </div>
         </CommonOptions>
         <CommonOptions key="Vocal" title={t`语音`}>
           <>
